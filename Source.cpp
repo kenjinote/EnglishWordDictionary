@@ -72,15 +72,15 @@ LPSTR w2a(LPCWSTR lpszText)
 
 static int callback(void* hEdit2, int argc, char** argv, char** columnName)
 {
-	if (argc > 2)
+	if (argc == 2)
 	{
-		if (argv[2])
+		if (argv[0] && argv[1])
 		{
-			LPWSTR lpszText1 = a2w(argv[1]);
+			LPWSTR lpszText1 = a2w(argv[0]);
 			SendMessageW((HWND)hEdit2, EM_REPLACESEL, 0, (LPARAM)lpszText1);
 			SendMessageW((HWND)hEdit2, EM_REPLACESEL, 0, (LPARAM)L" = ");
 			GlobalFree(lpszText1);
-			LPWSTR lpszText2 = a2w(argv[2]);
+			LPWSTR lpszText2 = a2w(argv[1]);
 			SendMessageW((HWND)hEdit2, EM_REPLACESEL, 0, (LPARAM)lpszText2);
 			SendMessageW((HWND)hEdit2, EM_REPLACESEL, 0, (LPARAM)L"\r\n");
 			GlobalFree(lpszText2);
@@ -125,8 +125,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				LPSTR lpszTextA = w2a(lpszText);
 				GlobalFree(lpszText);
 				const int nTextLengthA = (int)GlobalSize(lpszTextA);
-				LPSTR lpszSQL = (LPSTR)GlobalAlloc(0, nTextLengthA + 50);
-				lstrcpyA(lpszSQL, "select * from items where word like '");
+				LPSTR lpszSQL = (LPSTR)GlobalAlloc(0, nTextLengthA + 100);
+				lstrcpyA(lpszSQL, "select word, mean from items where word like '");
 				lstrcatA(lpszSQL, lpszTextA);
 				lstrcatA(lpszSQL, "%' limit 100");
 				SetWindowText((HWND)hEdit2, 0);
