@@ -140,7 +140,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				}
 				GlobalFree(lpszSQL);
 				GlobalFree(lpszTextA);
-				sqlite3_close(db);
+				sqlite3_close_v2(db);
 			}
 		}
 		break;
